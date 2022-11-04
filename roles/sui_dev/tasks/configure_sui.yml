@@ -11,7 +11,7 @@
   become: yes
   become_user: "{{ sui_user }}"
   args:
-    chdir: "{{ sui_user_dir }}"
+    chdir: "{{ sui_user_dir }}/sui"
 
 - name: Creates fullnode directory
   file:
