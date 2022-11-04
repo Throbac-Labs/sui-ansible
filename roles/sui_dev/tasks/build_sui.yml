@@ -48,8 +48,15 @@
     state: present
     update_cache: yes
 
+- name: check if sui is installed
+  shell: command  --version sui
+  register: sui_exists
+  ignore_errors: yes
+
+
 # Is there a better way to do this?
 - name: install sui
+  when: sui_exists is failed
   ansible.builtin.shell:  source "$HOME/.cargo/env" && cargo install --locked --git https://github.com/MystenLabs/sui.git --branch "{{ sui_target_branch }}" sui sui-node
   args:
     chdir: /root
