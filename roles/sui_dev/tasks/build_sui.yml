@@ -1,0 +1,59 @@
+- name: check if cargo is installed
+  shell: command -v cargo
+  register: cargo_exists
+  ignore_errors: yes
+
+
+- name: Download Installer
+  when: cargo_exists is failed
+  get_url:
+    url: https://sh.rustup.rs
+    dest: /tmp/sh.rustup.rs
+    mode: '0755'
+    force: 'yes'
+  tags:
+    - rust
+
+- name: install rust/cargo
+  when: cargo_exists is failed
+  shell: /tmp/sh.rustup.rs -y
+  tags:
+    - rust
+  
+# need to set up a user for sui and permission it to use rust/cargo
+- name: Update bashrc for rust/cargo for user
+  lineinfile:
+    dest: /root/.bashrc
+    line: "[ -f ~/.cargo/env ] && source $HOME/.cargo/env"
+    owner: root
+
+- name: Update apt-get repo and cache
+  apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+- name: install apt packages required for building sui binary
+  apt:
+    install_recommends: no
+    force: yes
+    name:
+      - curl
+      - git-all
+      - libssl-dev
+      - libclang-dev
+      - tzdata
+      - ca-certificates
+      - build-essential
+      - pkg-config
+      - cmake
+      - acl   # needed to prevent errors when building as unprivileged user via become
+    state: present
+    update_cache: yes
+
+# Is there a better way to do this?
+- name: install sui
+  ansible.builtin.shell:  source "$HOME/.cargo/env" && cargo install --locked --git https://github.com/MystenLabs/sui.git --branch "{{ sui_target_branch }}" sui sui-node
+  args:
+    chdir: /root
+    executable: /bin/bash
+
+
+

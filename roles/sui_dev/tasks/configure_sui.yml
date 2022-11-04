@@ -1,0 +1,27 @@
+- name: Clone the SUI repo
+  ansible.builtin.git:
+    repo: https://github.com/MystenLabs/sui.git
+    dest: "{{ sui_user_dir}}"
+    clone: yes
+    update: yes
+    version: "{{ sui_target_branch }}"
+
+- name: Copy fullnode yaml file
+  ansible.builtin.command: cp crates/sui-config/data/fullnode-template.yaml fullnode.yaml
+  become: yes
+  become_user: "{{ sui_user }}"
+  args:
+    chdir: "{{ sui_user_dir }}"
+
+- name: Creates fullnode directory
+  file:
+    path: "{{ sui_fullnode_dir }}"
+    state: directory
+
+- name: Get genesis blob
+  ansible.builtin.command: curl -fLJO https://github.com/MystenLabs/sui-genesis/raw/main/devnet/genesis.blob
+  become: yes
+  become_user: "{{ sui_user }}"
+  args:
+    chdir: "{{ sui_fullnode_dir }}"
+
