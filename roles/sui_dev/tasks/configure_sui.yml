@@ -5,6 +5,8 @@
     clone: yes
     update: yes
     version: "{{ sui_target_branch }}"
+  become: yes
+  become_user: "{{ sui_user }}"
 
 - name: Copy fullnode yaml file
   ansible.builtin.command: cp crates/sui-config/data/fullnode-template.yaml fullnode.yaml
