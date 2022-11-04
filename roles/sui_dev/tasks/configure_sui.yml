@@ -1,7 +1,7 @@
 - name: Clone the SUI repo
   ansible.builtin.git:
     repo: https://github.com/MystenLabs/sui.git
-    dest: "{{ sui_user_dir}}"
+    dest: "{{ sui_user_dir}}/sui"
     clone: yes
     update: yes
     version: "{{ sui_target_branch }}"
