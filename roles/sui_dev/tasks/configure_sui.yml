@@ -19,6 +19,8 @@
   file:
     path: "{{ sui_fullnode_dir }}"
     state: directory
+  become: yes
+  become_user: "{{ sui_user }}"
 
 - name: Get genesis blob
   ansible.builtin.command: curl -fLJO https://github.com/MystenLabs/sui-genesis/raw/main/devnet/genesis.blob
