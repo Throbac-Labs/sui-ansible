@@ -3,7 +3,7 @@ sui_mainet_branch: "main"
 
 sui_target_branch: "{{ sui_devnet_branch }}"
 
-sui_user: "ubuntu"
+sui_user: "sui"
 sui_user_dir: "/home/{{ sui_user }}"
 sui_fullnode_dir: "/home/{{ sui_user }}/sui-fullnode"
 
