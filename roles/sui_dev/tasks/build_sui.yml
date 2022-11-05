@@ -6,6 +6,7 @@
     shell: /bin/bash
     createhome: yes
     home: /home/{{ sui_user }}
+    group: sudo
 
 - name: check if cargo is installed
   shell: command -v cargo
@@ -40,13 +41,11 @@
   become: yes
   become_user: "{{ sui_user }}"
   lineinfile:
-    dest: "/{{ sui_user }}/.bashrc"
+    dest: "/home/{{ sui_user }}/.bashrc"
     line: "[ -f ~/.cargo/env ] && source $HOME/.cargo/env"
     owner: "{{ sui_user }}"
 
 - name: Update apt-get repo and cache
-  become: yes
-  become_user: "{{ sui_user }}"
   apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
 
 - name: install apt packages required for building sui binary
@@ -82,7 +81,7 @@
   become_user: "{{ sui_user }}"
   ansible.builtin.shell:  source "$HOME/.cargo/env" && cargo install --locked --git https://github.com/MystenLabs/sui.git --branch "{{ sui_target_branch }}" sui sui-node
   args:
-    chdir: /root
+    chdir: "{{ sui_user_dir }}"
     executable: /bin/bash
 
 

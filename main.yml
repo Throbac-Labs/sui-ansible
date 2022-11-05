@@ -13,3 +13,6 @@
       become: true
     
   handlers:
+      - name: daemon-reload
+        command: systemctl daemon-reload
+        become: true
