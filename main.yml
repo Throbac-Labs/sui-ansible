@@ -2,12 +2,15 @@
   hosts: '{{ target }}'
   gather_facts: false
   roles:
-    # - role: 'base_server'
-    #   tags: 'base_server'
-    #   become: true
-    # - role: 'monitor'
-    #   tags: 'monitor'
-    #   become: true
+    - role: 'base_server'
+      tags: 'base_server'
+      become: true
+    - role: 'docker_server'
+      tags: 'docker_server'
+      become: true
+    - role: 'monitor'
+      tags: 'monitor'
+      become: true
     - role: 'sui_dev'
       tags: 'sui_dev'
       become: true
