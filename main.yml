@@ -8,7 +8,7 @@
     - role: 'docker_server'
       tags: 'docker_server'
       become: true
-     - role: 'sui_dev'
+    - role: 'sui_dev'
       tags: 'sui_dev'
       become: true
     - role: 'monitor'
