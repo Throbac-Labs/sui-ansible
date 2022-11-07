@@ -15,7 +15,25 @@
       tags: 'monitor'
       become: true
     
-  handlers:
+ handlers:
+      - name: restart sshd
+        service:
+          name: sshd
+          state: restarted
+        become: true
+      
       - name: daemon-reload
         command: systemctl daemon-reload
+        become: true
+      
+      - name: restart pocket
+        service:
+          name: pocket
+          state: restarted
+        become: true
+      
+      - name: restart docker
+        service:
+          name: docker
+          state: restarted
         become: true
