@@ -1,0 +1,122 @@
+- name: Debug admin_users
+  debug:
+    msg: "admin_users item: {{ item }}"
+  loop: "{{ admin_users }}"
+
+- name: Debug users
+  debug:
+    msg: "users item: {{ item }}"
+  loop: "{{ users }}"
+
+- name: Install sudo
+  apt:
+    name:
+      - sudo
+    state: present
+    update_cache: true
+
+- name: Create docker group
+  group:
+    name: 'docker'
+    state: present
+
+- name: Create admin users
+  user:
+    name: "{{ item.username }}"
+    #password: '*'   # pw is locked/disabled.  key auth only + passwordless sudo
+    password: "{{ item.password }}"   # pw is locked/disabled.  key auth only + passwordless sudo
+    state: present
+    shell: /bin/bash
+    createhome: yes
+    home: /home/{{ item.username }}
+    groups:
+      - sudo
+      - docker
+      - adm
+  loop: "{{ admin_users }}"
+
+- name: Set authorized key for admin users
+  authorized_key: 
+    user: "{{ item.username }}"
+    state: present
+    key: "{{ item.sshpublickey }}"
+    manage_dir: yes
+  loop: "{{ admin_users }}"
+
+- name: Create normal users
+  user:
+    name: "{{ item.username }}"
+    password: '*'   # pw is locked/disabled.  key auth only + passwordless sudo
+    state: present
+    shell: /bin/bash
+    createhome: yes
+    home: /home/{{ item.username }}
+    groups:
+      - docker
+  loop: "{{ users }}"
+
+- name: Setup common aliases for admin users
+  lineinfile:
+    path: /home/{{ item.username }}/.profile
+    line: alias ll='ls -laF'
+    state: present
+  loop: "{{ admin_users }}"
+  
+- name: Setup common aliases for normal users
+  lineinfile:
+    path: /home/{{ item.username }}/.profile
+    line: alias ll='ls -laF'
+    state: present
+  loop: "{{ users }}"
+
+- name: Setup common aliases for root user
+  lineinfile:
+    path: /root/.profile
+    line: alias ll='ls -laF'
+    state: present
+
+- name: Install screen and htop
+  apt:
+    name:
+      - screen
+      #- htop  #packaged version doesn't play nice w/ LXC
+      - vim
+    state: present
+    update_cache: true
+
+- name: Setup screenrc for all users
+  copy:
+    src: 'screenrc'
+    dest: '/etc/screenrc'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+
+- name: Setup passwordless sudo for members of sudo group
+  lineinfile: 
+    path: /etc/sudoers
+    regexp: '%sudo	ALL=(ALL:ALL) ALL'
+    line: '%sudo	ALL=(ALL:ALL) NOPASSWD:ALL' 
+
+- name: create /etc/vimrc.local to disable visual copy mode
+  copy:
+    src: vimrc.local
+    dest: /etc/vim/vimrc.local
+    owner: root
+    group: root
+    mode: '600'
+
+- name: Disable password auth for sshd
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regex: '^PasswordAuthentication yes'
+    line: 'PasswordAuthentication no'
+  notify:
+    - restart sshd
+
+#- name: Install node_exporter # note that the version in the debian bullseye repo is over a year old, but <shrug>
+#  apt:
+#    name:
+#      - prometheus-node-exporter
+#    state: present
+#    update_cache: true
