@@ -14,8 +14,8 @@
     - role: 'monitor'
       tags: 'monitor'
       become: true
-    
- handlers:
+
+  handlers:
       - name: restart sshd
         service:
           name: sshd
