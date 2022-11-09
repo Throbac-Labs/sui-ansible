@@ -26,6 +26,7 @@
   loop:
     - "{{ monitor_user_dir }}/docker"
     - "{{ monitor_user_dir }}/loki"
+    - "{{ monitor_user_dir }}/promtail"
     - "{{ monitor_user_dir }}/grafana"
     - "{{ monitor_user_dir }}/prometheus"
     - "{{ monitor_user_dir }}/prometheus/data"
