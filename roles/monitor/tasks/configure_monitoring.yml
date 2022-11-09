@@ -29,6 +29,7 @@
     - "{{ monitor_user_dir }}/promtail"
     - "{{ monitor_user_dir }}/grafana"
     - "{{ monitor_user_dir }}/prometheus"
+    - "{{ monitor_user_dir }}/prometheus/etc"
     - "{{ monitor_user_dir }}/prometheus/data"
     - "{{ monitor_user_dir }}/prometheus/data/etc"
 
