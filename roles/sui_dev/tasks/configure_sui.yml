@@ -8,13 +8,6 @@
   become: yes
   become_user: "{{ sui_user }}"
 
-- name: Copy fullnode yaml file
-  ansible.builtin.command: cp crates/sui-config/data/fullnode-template.yaml fullnode.yaml
-  become: yes
-  become_user: "{{ sui_user }}"
-  args:
-    chdir: "{{ sui_user_dir }}/sui"
-
 - name: Creates fullnode directory
   file:
     path: "{{ sui_fullnode_dir }}"
@@ -29,3 +22,9 @@
   args:
     chdir: "{{ sui_fullnode_dir }}"
 
+- name: Copy fullnode yaml file
+  ansible.builtin.command: cp crates/sui-config/data/fullnode-template.yaml fullnode.yaml
+  become: yes
+  become_user: "{{ sui_user }}"
+  args:
+    chdir: "{{ sui_fullnode_dir }}"
