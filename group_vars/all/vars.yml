@@ -6,4 +6,4 @@ sui_target_branch: "{{ sui_devnet_branch }}"
 sui_user: "sui"
 sui_user_dir: "/home/{{ sui_user }}"
 sui_fullnode_dir: "/home/{{ sui_user }}/sui-fullnode"
-sdn_mtu: 1358 
+
