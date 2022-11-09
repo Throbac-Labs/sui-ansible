@@ -5,7 +5,8 @@ Wants=network-online.target systemd-networkd-wait-online.service
 
 [Service]
 User={{ sui_user }}
-WorkingDirectory="{{ sui_user_dir }}/sui"
+Group={{ sui_user }}
+#WorkingDirectory="{{ sui_user_dir }}/sui"
 ExecStart=/home/sui/.cargo/bin/sui-node --config-path fullnode.yaml
 Restart=always
 
