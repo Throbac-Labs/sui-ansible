@@ -18,6 +18,14 @@ services:
 #      - monitoring
 #    user: "1100:1100"
   promtail:
+    image: prom/node-exporter
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
+    restart: unless-stopped
+    networks:
+      - monitoring
+  promtail:
     image: grafana/promtail:2.4.0
     container_name: promtail
     volumes:
@@ -30,17 +38,17 @@ services:
     command: -config.file=/etc/promtail/promtail-config.yml
     networks:
       - monitoring
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    user: "1100"
-    volumes:
-      - {{ monitor_user_dir }}/grafana:/var/lib/grafana
-    ports:
-      - "3000:3000"
-    restart: unless-stopped
-    networks:
-      - monitoring
+#  grafana:
+#    image: grafana/grafana:latest
+#    container_name: grafana
+#    user: "1100"
+#    volumes:
+#      - {{ monitor_user_dir }}/grafana:/var/lib/grafana
+#    ports:
+#      - "3000:3000"
+#    restart: unless-stopped
+#    networks:
+#      - monitoring
   prometheus:
      image: prom/prometheus:latest
      container_name: prometheus
