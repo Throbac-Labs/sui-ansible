@@ -6,3 +6,18 @@ sui_target_branch: "{{ sui_devnet_branch }}"
 sui_user: "sui"
 sui_user_dir: "/home/{{ sui_user }}"
 sui_fullnode_dir: "/home/{{ sui_user }}/sui-fullnode"
+
+sdn_mtu: 1358
+admin_users:
+  - username: 'YOUR-USER-NAME'   
+    sshpublickey: 'YOUR-REMOTE-SSH-PUBKEY' 
+grafana_cloud_prometheus_url: "YOUR-GRAFANA-CLOUD-PROMETHEUS-REMOTE-URL"  
+grafana_cloud_prometheus_username: "YOUR-GRAFANA-CLOUD-PROMETHEUS-USERNAME" 
+grafana_cloud_prometheus_password: "YOUR-GRAFANA-CLOUD-PROMETHEUS-PASSWORD"  
+grafana_cloud_promtail_username: "YOUR-GRAFANA-CLOUD-PROMTAIL-USERNAME"  
+grafana_cloud_promtail_apikey: "YOUR-GRAFANA-CLOUD-PROMTAIL-PASSWORD"  
+grafana_cloud_promtail_url: "https://{{ grafana_cloud_promtail_username }}:{{ grafana_cloud_promtail_apikey }}@YOUR-GRAFANA-CLOUD-REMOTE-PROMTAIL-URL" 
+monitor_user: "monitor" 
+monitor_user_dir: "/home/{{ monitor_user }}"
+users:  
+  - username: '{{ sui_user }}'
