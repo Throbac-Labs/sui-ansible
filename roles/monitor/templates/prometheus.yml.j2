@@ -21,9 +21,9 @@ scrape_configs:
       - targets:
           - '0.0.0.0:9184'
 
-remote_write: 
+remote_write:
 - url: {{ grafana_cloud_prometheus_url }}
-  basic_auth: 
+  basic_auth:
     username: {{ grafana_cloud_prometheus_username }}
     password: {{ grafana_cloud_prometheus_password }}
   name: drop_expensive
