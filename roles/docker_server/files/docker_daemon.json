@@ -1,4 +1,4 @@
 {
-    "storage-driver": "overlay2",
+    "storage-driver": "fuse-overlayfs",
     "mtu": {{ sdn_mtu }}
 }
