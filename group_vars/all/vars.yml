@@ -1,4 +1,4 @@
-sui_devnet_branch: "devnet"
+sui_devnet_branch: "testnet"
 sui_mainet_branch: "main"
 
 sui_target_branch: "{{ sui_devnet_branch }}"
