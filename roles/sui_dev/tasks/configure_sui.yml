@@ -26,7 +26,7 @@
     mode: '0644'
 
 - name: Get genesis blob
-  ansible.builtin.command: curl -fLJO https://github.com/SuiExternal/sui-external/raw/main/genesis.blob
+  ansible.builtin.command: curl -fLJO {{ sui_genesis }}
   become: yes
   become_user: "{{ sui_user }}"
   args:
